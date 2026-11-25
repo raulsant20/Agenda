@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Horarios disponibles</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="wrap">
+    <header class="top">
+      <div>
+        <h1 id="title">Clases particulares</h1>
+        <p class="subtitle">Horarios disponibles por semana</p>
+      </div>
+    </header>
+
+    <div class="toolbar">
+      <button id="prev" type="button" aria-label="Semana anterior">‹</button>
+      <button id="today" type="button">Esta semana</button>
+      <button id="next" type="button" aria-label="Semana siguiente">›</button>
+      <span class="range" id="range"></span>
+      <div class="legend"><span class="l-free">Libre</span><span class="l-busy">Ocupado</span></div>
+    </div>
+
+    <main id="week" class="week" aria-live="polite"></main>
+    <p class="error" id="err"></p>
+    <footer>Escribime para reservar uno de los horarios libres.</footer>
+  </div>
+
+  <script src="common.js"></script>
+  <script>
+    const weekEl = document.getElementById('week');
+    const nav = weekNav(load);
+    async function load(start) {
+      document.getElementById('range').textContent = rangeLabel(start);
+      try {
+        const week = await api('/api/public/week?start=' + start);
+        document.getElementById('title').textContent = week.title;
+        document.title = week.title + ' · Horarios';
+        renderWeek(weekEl, week, {
+          hidePast: true,
+          slotContent: (s) => s.status === 'free'
+            ? { cls: 'free', label: 'Libre' }
+            : { cls: 'busy', label: 'Ocupado' },
+        });
+        document.getElementById('err').textContent = '';
+      } catch (e) {
+        document.getElementById('err').textContent = 'No se pudo cargar la agenda.';
+      }
+    }
+    nav.refresh();
+    setInterval(() => { if (!document.hidden) nav.refresh(); }, 60000);
+  </script>
+</body>
+</html>

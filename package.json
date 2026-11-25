@@ -1,0 +1,9 @@
+{
+  "name": "agenda-clases",
+  "version": "1.0.0",
+  "description": "Agenda de clases particulares: vista pública de horas libres y panel privado",
+  "main": "server.js",
+  "scripts": { "start": "node server.js" },
+  "engines": { "node": ">=18" },
+  "license": "MIT"
+}

@@ -1,0 +1,92 @@
+:root {
+  --bg: #f6f7f9; --surface: #fff; --text: #1d2330; --muted: #6b7280; --border: #e3e6eb;
+  --accent: #2f6fde; --accent-text: #fff;
+  --free-bg: #e7f6ec; --free-text: #17673a; --free-border: #b9e4c8;
+  --busy-bg: #eef0f3; --busy-text: #8a919c;
+  --booked-bg: #e6eefc; --booked-text: #1f4fa8; --booked-border: #bcd0f5;
+  --blocked-bg: #fbeceb; --blocked-text: #9b3a33; --blocked-border: #f0c9c5;
+  --today: #2f6fde; --radius: 10px;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #12151b; --surface: #1b1f27; --text: #e6e8ec; --muted: #9aa1ad; --border: #2c323d;
+    --accent: #5b8ff0;
+    --free-bg: #173322; --free-text: #8fdcaa; --free-border: #245c39;
+    --busy-bg: #20252e; --busy-text: #6c7380;
+    --booked-bg: #1b2a47; --booked-text: #a9c4f7; --booked-border: #2e4677;
+    --blocked-bg: #3a1f1d; --blocked-text: #f0aaa3; --blocked-border: #63302c;
+    --today: #6f9cf3;
+  }
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body { margin: 0; font: 15px/1.45 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--text); }
+.wrap { max-width: 1200px; margin: 0 auto; padding: 20px 16px 40px; }
+header.top { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 16px; }
+h1 { font-size: 1.5rem; margin: 0; }
+.subtitle { color: var(--muted); margin: 2px 0 0; }
+.toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 14px; }
+.toolbar .range { font-weight: 600; margin: 0 6px; min-width: 12ch; }
+button, .btn { font: inherit; border: 1px solid var(--border); background: var(--surface); color: var(--text); padding: 7px 12px; border-radius: 8px; cursor: pointer; text-decoration: none; display: inline-block; }
+button:hover, .btn:hover { border-color: var(--accent); }
+button.primary { background: var(--accent); color: var(--accent-text); border-color: var(--accent); }
+button.danger { color: var(--blocked-text); border-color: var(--blocked-border); }
+button:disabled { opacity: .5; cursor: default; }
+.legend { display: flex; gap: 14px; flex-wrap: wrap; color: var(--muted); font-size: .9rem; margin-left: auto; }
+.legend span::before { content: ""; display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 5px; vertical-align: -1px; border: 1px solid transparent; }
+.legend .l-free::before { background: var(--free-bg); border-color: var(--free-border); }
+.legend .l-busy::before { background: var(--busy-bg); }
+.legend .l-booked::before { background: var(--booked-bg); border-color: var(--booked-border); }
+.legend .l-blocked::before { background: var(--blocked-bg); border-color: var(--blocked-border); }
+
+.week { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 8px; }
+.day { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 8px; min-width: 0; }
+.day.today { border-color: var(--today); box-shadow: 0 0 0 1px var(--today) inset; }
+.day.past { opacity: .6; }
+.day h2 { font-size: .95rem; margin: 0 0 8px; text-align: center; }
+.day h2 small { display: block; color: var(--muted); font-weight: 400; font-size: .8rem; }
+.day .empty { color: var(--muted); text-align: center; font-size: .85rem; padding: 10px 0; }
+.day .count { text-align: center; font-size: .78rem; color: var(--muted); margin: -4px 0 8px; }
+.slots { display: flex; flex-direction: column; gap: 5px; }
+.slot { display: block; width: 100%; text-align: left; border-radius: 7px; padding: 6px 8px; font-size: .88rem; border: 1px solid transparent; cursor: default; overflow: hidden; }
+.slot .t { font-weight: 600; font-variant-numeric: tabular-nums; }
+.slot .n { display: block; font-size: .8rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.slot.free { background: var(--free-bg); color: var(--free-text); border-color: var(--free-border); }
+.slot.busy { background: var(--busy-bg); color: var(--busy-text); }
+.slot.booked { background: var(--booked-bg); color: var(--booked-text); border-color: var(--booked-border); }
+.slot.blocked { background: var(--blocked-bg); color: var(--blocked-text); border-color: var(--blocked-border); }
+.slot.past { opacity: .5; }
+button.slot { cursor: pointer; }
+button.slot:hover { filter: brightness(.97); border-color: var(--accent); }
+
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; }
+.login { max-width: 360px; margin: 10vh auto 0; }
+label { display: block; font-size: .9rem; margin: 10px 0 4px; color: var(--muted); }
+input, select, textarea { font: inherit; width: 100%; padding: 8px 10px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--text); }
+textarea { resize: vertical; min-height: 60px; }
+.row { display: flex; gap: 8px; align-items: center; }
+.actions { display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-end; margin-top: 16px; }
+.error { color: var(--blocked-text); min-height: 1.3em; margin: 8px 0 0; font-size: .9rem; }
+.hint { color: var(--muted); font-size: .85rem; margin: 4px 0 0; }
+dialog { border: 1px solid var(--border); border-radius: 12px; background: var(--surface); color: var(--text); padding: 20px; width: min(440px, calc(100vw - 32px)); }
+dialog::backdrop { background: rgba(0,0,0,.4); }
+dialog h3 { margin: 0 0 4px; }
+.seg { display: flex; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+.seg label { flex: 1; margin: 0; text-align: center; padding: 7px; cursor: pointer; color: var(--text); }
+.seg input { display: none; }
+.seg label:has(input:checked) { background: var(--accent); color: var(--accent-text); }
+.days-cfg { display: grid; grid-template-columns: auto 1fr 1fr; gap: 6px 10px; align-items: center; }
+.days-cfg input[type=time] { padding: 5px 8px; }
+.days-cfg .dname { display: flex; gap: 6px; align-items: center; white-space: nowrap; }
+.days-cfg .dname input { width: auto; }
+footer { color: var(--muted); font-size: .85rem; margin-top: 24px; text-align: center; }
+
+@media (max-width: 820px) {
+  .week { grid-template-columns: 1fr; }
+  .day h2 { text-align: left; }
+  .day h2 small { display: inline; margin-left: 6px; }
+  .day .count { text-align: left; }
+  .slots { display: grid; grid-template-columns: repeat(auto-fill, minmax(86px, 1fr)); }
+  .slot { text-align: center; }
+  .legend { margin-left: 0; width: 100%; }
+}
